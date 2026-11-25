@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Starts weg from Git Bash. Paths are turned into absolute Windows paths first.
+
+script="$HOME/.local/share/weg/weg.ps1"
+args=()
+options=true
+for a in "$@"; do
+  if $options && [[ "$a" == -* ]]; then
+    args+=("$a")
+    [[ "$a" == "--" ]] && options=false
+  else
+    options=false
+    # cygpath would read a name like -foo as an option.
+    [[ "$a" == -* ]] && a="./$a"
+    args+=("$(cygpath -aw "$a")")
+  fi
+done
+
+# Do not stay in the target folder, or this script would lock it itself.
+cd "$(cygpath -u "$SYSTEMROOT")" || exit 1
+MSYS_NO_PATHCONV=1 exec powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w "$script")" "${args[@]}"
