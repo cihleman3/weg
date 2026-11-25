@@ -19,6 +19,16 @@ removed C:\Users\me\talk\3-patterns
 
 Requirements: Windows 10 or 11. Windows PowerShell 5.1 comes with Windows. Git Bash is optional.
 
+### Quickest: one command in PowerShell
+
+```powershell
+$d = "$env:TEMP\weg"; Invoke-WebRequest https://github.com/cihleman3/weg/archive/refs/heads/master.zip -OutFile "$d.zip" -UseBasicParsing; Expand-Archive "$d.zip" $d -Force; powershell -ExecutionPolicy Bypass -File "$d\weg-master\install.ps1"; Remove-Item "$d.zip", $d -Recurse -Force
+```
+
+This downloads the repository as a ZIP, installs `weg` and removes the download again. Then open a new terminal.
+
+### From a clone or a downloaded ZIP
+
 1. Get this repository: `git clone` it, or download it as a ZIP from GitHub and unpack it.
 2. In that folder:
 
@@ -33,7 +43,7 @@ Requirements: Windows 10 or 11. Windows PowerShell 5.1 comes with Windows. Git B
 
 The install script copies `weg.ps1` into `~/.local/share/weg` and the launchers into `~/.local/bin`: `weg` for Git Bash, `weg.cmd` for PowerShell and cmd. If `~/.local/bin` is not on your PATH yet, the script adds it to your user PATH.
 
-To update, pull or download the new version and run the install script again. To uninstall, delete `~/.local/share/weg`, `~/.local/bin/weg` and `~/.local/bin/weg.cmd`.
+To update, run the one-line command again, or pull or download the new version and run the install script again. To uninstall, delete `~/.local/share/weg`, `~/.local/bin/weg` and `~/.local/bin/weg.cmd`.
 
 ## Usage
 
